@@ -1,0 +1,83 @@
+:root { color-scheme: light dark; }
+* { box-sizing: border-box; }
+
+body {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  max-width: 1100px;
+}
+
+h1 { margin-bottom: 1rem; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 16px;
+}
+
+section {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+input[type="file"] {
+  display: block;
+  margin: 8px 0;
+}
+
+.preview {
+  margin-top: 10px;
+}
+
+.preview img,
+.preview video {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+
+button {
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+select,
+input[type="number"] {
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+/* 🔴 Webcam section chiếm full hàng */
+.webcam-section {
+  grid-column: 1 / -1;
+}
+
+/* Hàng nút + config webcam */
+.cam-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+/* 2 khung webcam ngang nhau */
+.cam-preview-row {
+  display: flex;
+  gap: 12px;
+}
+
+.cam-preview-row .preview {
+  flex: 1 1 0;
+}
+
+/* Chiều cao khung webcam – có thể chỉnh theo ý */
+.cam-preview-row video,
+.cam-preview-row img {
+  width: 100%;
+  height: 320px;      /* nếu muốn thấp hơn thì giảm xuống */
+  object-fit: cover;  /* crop cho gọn khung */
+}

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <title>YOLO Web Test — Sign & Lane</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <h1>YOLO Web Test — Sign (detect) & Lane (segment)</h1>
+
+  <div class="grid">
+    <section>
+      <h2>Ảnh: Sign (detect)</h2>
+      <input id="sign-img" type="file" accept="image/*" />
+      <select id="sign-var">
+        <option>best</option><option>last</option>
+      </select>
+      <input id="sign-conf" type="number" step="0.01" min="0" max="1" value="0.4" />
+      <button id="btn-sign-img">Infer</button>
+      <div class="preview"><img id="sign-out" /></div>
+    </section>
+
+    <section>
+      <h2>Ảnh: Lane (segment)</h2>
+      <input id="lane-img" type="file" accept="image/*" />
+      <select id="lane-var">
+        <option>best</option><option>last</option>
+      </select>
+      <input id="lane-conf" type="number" step="0.01" min="0" max="1" value="0.3" />
+      <button id="btn-lane-img">Infer</button>
+      <div class="preview"><img id="lane-out" /></div>
+    </section>
+
+    <section>
+      <h2>Video: Sign (detect)</h2>
+      <input id="sign-vid" type="file" accept="video/*" />
+      <select id="sign-vid-var">
+        <option>best</option><option>last</option>
+      </select>
+      <input id="sign-vid-conf" type="number" step="0.01" min="0" max="1" value="0.35" />
+      <input id="sign-vid-stride" type="number" step="1" min="1" max="10" value="2" />
+      <button id="btn-sign-vid">Infer</button>
+      <div class="preview"><video id="sign-vid-out" controls></video></div>
+    </section>
+
+    <section>
+      <h2>Video: Lane (segment)</h2>
+      <input id="lane-vid" type="file" accept="video/*" />
+      <select id="lane-vid-var">
+        <option>best</option><option>last</option>
+      </select>
+      <input id="lane-vid-conf" type="number" step="0.01" min="0" max="1" value="0.25" />
+      <input id="lane-vid-stride" type="number" step="1" min="1" max="10" value="1" />
+      <button id="btn-lane-vid">Infer</button>
+      <div class="preview"><video id="lane-vid-out" controls></video></div>
+    </section>
+
+    <section class="webcam-section">
+      <h2>Webcam: Sign & Lane</h2>
+
+      <div class="cam-row">
+        <button id="cam-start">Start camera</button>
+        <button id="cam-stop" disabled>Stop</button>
+      </div>
+
+      <div class="cam-row">
+        <label>
+          Task:
+          <select id="cam-task">
+            <option value="lane">Lane (segment)</option>
+            <option value="sign">Sign (detect)</option>
+          </select>
+        </label>
+
+        <label id="cam-lane-var-wrap">
+          Lane variant:
+          <select id="cam-lane-var">
+            <option value="best">best</option>
+            <option value="last">last</option>
+          </select>
+        </label>
+
+        <label>
+          Conf:
+          <input id="cam-conf" type="number" step="0.01" min="0.1" max="1" value="0.35" />
+        </label>
+
+        <span id="cam-status">Status: idle</span>
+      </div>
+
+      <div class="cam-preview-row">
+        <div class="preview">
+          <video id="cam-video" autoplay playsinline muted></video>
+        </div>
+        <div class="preview">
+          <img id="cam-out" />
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <canvas id="cam-canvas" style="display:none;"></canvas>
+
+  <script src="./script.js"></script>
+</body>
+</html>
