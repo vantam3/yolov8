@@ -155,3 +155,16 @@ def ensure_names_and_plot(res):
         res.names = {i: f"class{i}" for i in range(n)}
 
     return res.plot()
+
+
+def draw_yolo_predictions(img: np.ndarray, result) -> np.ndarray:
+    """
+    Vẽ lại kết quả detection/segmentation (result) lên một ảnh mới (img).
+    Dùng để 'giữ' annotation trên các frame bị skip (sticky annotations).
+    """
+    if result is None:
+        return img
+
+    # result.plot(img=...) sẽ vẽ boxes/masks/labels lên img được truyền vào
+    # Lưu ý: result.plot() trả về ảnh BGR mới (copy), không sửa in-place ảnh gốc
+    return result.plot(img=img)

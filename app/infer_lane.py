@@ -1,5 +1,6 @@
 import os
 import cv2
+import asyncio
 import numpy as np
 from PIL import Image
 from fastapi import UploadFile
@@ -15,6 +16,7 @@ from .utils import (
     ensure_fps,
     video_writer,
     as_mp4_bytes,
+    draw_yolo_predictions,
 )
 
 
@@ -130,6 +132,7 @@ async def infer_lane_video(video: UploadFile, variant: str, conf: float, stride:
 
     idx = 0
     used_conf = conf if conf is not None else 0.35
+    last_result = None
 
     while True:
         ok, frame = cap.read()
@@ -147,13 +150,18 @@ async def infer_lane_video(video: UploadFile, variant: str, conf: float, stride:
 
         # skip frame theo stride (giảm giật / giảm tải)
         if (idx % max(1, stride)) != 0:
-            writer.write(frame)
+            if last_result is not None:
+                out = draw_yolo_predictions(frame, last_result)
+                writer.write(out)
+            else:
+                writer.write(frame)
             idx += 1
             continue
 
         frame_bgr = ensure_bgr_ndarray(frame)
 
-        res = model.predict(
+        res_list = await asyncio.to_thread(
+            model.predict,
             source=frame_bgr,
             imgsz=getattr(settings, "LANE_IMGSZ", 960),
             conf=used_conf,
@@ -162,7 +170,9 @@ async def infer_lane_video(video: UploadFile, variant: str, conf: float, stride:
             retina_masks=True,
             save=False,
             verbose=False,
-        )[0]
+        )
+        res = res_list[0]
+        last_result = res
 
         try:
             n_boxes = int(res.boxes.shape[0]) if res.boxes is not None else 0

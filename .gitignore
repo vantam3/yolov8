@@ -3,4 +3,9 @@ exports_yolo/lane/best/best
 exports_yolo/lane/last/last
 exports_yolo/sign/best/best
 exports_yolo/sign/last/last
+# models
 
+# python cache
+app/__pycache__/
+**/__pycache__/
+*.py[cod]
